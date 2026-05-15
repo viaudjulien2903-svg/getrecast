@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
 :root {
   --ink: #0d0d0d;
   --paper: #f5f2eb;
@@ -20,9 +20,9 @@
   --serif: 'Instrument Serif', Georgia, serif;
   --sans: 'DM Sans', system-ui, sans-serif;
 }
-
+ 
 html { scroll-behavior: smooth; }
-
+ 
 body {
   background: var(--paper);
   color: var(--ink);
@@ -31,7 +31,7 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
-
+ 
 /* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -62,7 +62,7 @@ nav {
   transition: opacity 0.2s;
 }
 .nav-cta:hover { opacity: 0.75; }
-
+ 
 /* HERO */
 .hero {
   min-height: 100vh;
@@ -73,7 +73,7 @@ nav {
   margin: 0 auto;
   position: relative;
 }
-
+ 
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
@@ -86,7 +86,7 @@ nav {
   display: inline-block; width: 24px; height: 1px;
   background: var(--muted);
 }
-
+ 
 .hero-title {
   font-family: var(--serif);
   font-size: clamp(48px, 7vw, 96px);
@@ -101,7 +101,7 @@ nav {
   font-style: italic;
   color: var(--accent-dark);
 }
-
+ 
 .hero-sub {
   font-size: 18px;
   font-weight: 300;
@@ -111,7 +111,7 @@ nav {
   margin-bottom: 48px;
   opacity: 0; animation: fadeUp 0.7s 0.3s forwards;
 }
-
+ 
 .hero-form {
   display: flex; gap: 10px; flex-wrap: wrap;
   opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
@@ -142,7 +142,7 @@ nav {
 }
 .hero-form button:hover { background: #b8e04a; transform: translateY(-1px); }
 .hero-form button:active { transform: translateY(0); }
-
+ 
 .hero-social-proof {
   margin-top: 20px;
   font-size: 13px;
@@ -150,7 +150,7 @@ nav {
   opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
 }
 .hero-social-proof strong { color: var(--ink); }
-
+ 
 .hero-demo {
   position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
   width: 380px;
@@ -162,7 +162,7 @@ nav {
   display: none;
 }
 @media (min-width: 1000px) { .hero-demo { display: block; } }
-
+ 
 .demo-label {
   font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
   color: var(--muted); margin-bottom: 16px;
@@ -198,7 +198,7 @@ nav {
   margin-left: auto;
   font-size: 11px; color: var(--muted); font-weight: 400;
 }
-
+ 
 /* HOW IT WORKS */
 .section {
   max-width: 1100px; margin: 0 auto;
@@ -217,7 +217,7 @@ nav {
   margin-bottom: 60px;
 }
 .section-title em { font-style: italic; color: var(--accent-dark); }
-
+ 
 .steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -241,7 +241,7 @@ nav {
 }
 .step-title { font-size: 16px; font-weight: 500; margin-bottom: 8px; }
 .step-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
-
+ 
 /* OUTPUTS */
 .outputs-grid {
   display: grid;
@@ -268,7 +268,7 @@ nav {
 }
 .output-name { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
 .output-desc { font-size: 13px; color: var(--muted); }
-
+ 
 /* PRICING */
 .pricing-grid {
   display: grid;
@@ -324,7 +324,7 @@ nav {
   background: var(--accent); color: var(--ink); border-color: var(--accent);
 }
 .price-btn:hover { opacity: 0.75; transform: translateY(-1px); }
-
+ 
 /* TESTIMONIALS */
 .testimonials {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -349,7 +349,7 @@ nav {
 }
 .testimonial-name { font-size: 13px; font-weight: 500; }
 .testimonial-role { font-size: 12px; color: var(--muted); }
-
+ 
 /* CTA FOOTER */
 .cta-section {
   background: var(--ink);
@@ -381,7 +381,7 @@ nav {
   transition: background 0.2s, transform 0.15s;
 }
 .cta-form button:hover { background: #b8e04a; transform: translateY(-1px); }
-
+ 
 footer {
   background: var(--ink);
   padding: 24px 40px;
@@ -392,12 +392,12 @@ footer {
 footer span { font-size: 13px; color: rgba(245,242,235,0.4); }
 footer a { font-size: 13px; color: rgba(245,242,235,0.4); text-decoration: none; }
 footer a:hover { color: var(--paper); }
-
+ 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
+ 
 /* success state */
 .form-success {
   display: none;
@@ -410,12 +410,12 @@ footer a:hover { color: var(--paper); }
 </style>
 </head>
 <body>
-
+ 
 <nav>
   <a href="#" class="nav-logo">re<span>cast</span></a>
   <a href="#access" class="nav-cta">Accès anticipé gratuit</a>
 </nav>
-
+ 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-eyebrow">Productivité créateurs de contenu</div>
@@ -428,17 +428,16 @@ footer a:hover { color: var(--paper); }
     Colle ton article de blog, Recast génère instantanément
     10 tweets, 5 posts LinkedIn, 1 newsletter et 1 script vidéo — prêts à publier.
   </p>
-  <div class="hero-form" id="hero-form-wrap">
-    <input type="email" id="hero-email" placeholder="ton@email.com" autocomplete="email">
-    <button onclick="submitEmail('hero-email', 'hero-success', 'hero-form-wrap')">
-      Rejoindre la liste — c'est gratuit
-    </button>
-  </div>
+  <form class="hero-form" id="hero-form-wrap" name="waitlist" method="POST" data-netlify="true">
+    <input type="hidden" name="form-name" value="waitlist">
+    <input type="email" name="email" id="hero-email" placeholder="ton@email.com" autocomplete="email" required>
+    <button type="submit">Rejoindre la liste — c'est gratuit</button>
+  </form>
   <div class="form-success" id="hero-success">
     ✓ Super ! On te contacte en priorité au lancement.
   </div>
   <p class="hero-social-proof"><strong>47 créateurs</strong> déjà sur la liste d'attente</p>
-
+ 
   <!-- Demo card -->
   <div class="hero-demo">
     <div class="demo-label">Exemple de transformation</div>
@@ -470,7 +469,7 @@ footer a:hover { color: var(--paper); }
     </div>
   </div>
 </section>
-
+ 
 <!-- HOW IT WORKS -->
 <section class="section">
   <div class="section-eyebrow">Comment ça marche</div>
@@ -493,7 +492,7 @@ footer a:hover { color: var(--paper); }
     </div>
   </div>
 </section>
-
+ 
 <!-- OUTPUTS -->
 <section class="section" style="padding-top: 0;">
   <div class="section-eyebrow">Ce que tu obtiens</div>
@@ -525,7 +524,7 @@ footer a:hover { color: var(--paper); }
     </div>
   </div>
 </section>
-
+ 
 <!-- PRICING -->
 <section class="section" style="padding-top: 0;">
   <div class="section-eyebrow">Tarifs</div>
@@ -569,7 +568,7 @@ footer a:hover { color: var(--paper); }
     </div>
   </div>
 </section>
-
+ 
 <!-- TESTIMONIALS -->
 <section class="section" style="padding-top: 0;">
   <div class="section-eyebrow">Ce qu'ils en disent</div>
@@ -607,7 +606,7 @@ footer a:hover { color: var(--paper); }
     </div>
   </div>
 </section>
-
+ 
 <!-- CTA FOOTER -->
 <section class="cta-section" id="access">
   <h2 class="section-title" style="color: var(--paper);">
@@ -617,17 +616,16 @@ footer a:hover { color: var(--paper); }
   <p style="color: rgba(245,242,235,0.6); font-size: 16px; max-width: 420px; margin: 0 auto;">
     Les 100 premiers inscrits obtiennent 1 mois Pro offert au lancement. Sans CB requise.
   </p>
-  <div class="cta-form" id="cta-form-wrap">
-    <input type="email" id="cta-email" placeholder="ton@email.com" autocomplete="email">
-    <button onclick="submitEmail('cta-email', 'cta-success', 'cta-form-wrap')">
-      Réserver mon accès
-    </button>
-  </div>
+  <form class="cta-form" id="cta-form-wrap" name="waitlist-cta" method="POST" data-netlify="true">
+    <input type="hidden" name="form-name" value="waitlist-cta">
+    <input type="email" name="email" id="cta-email" placeholder="ton@email.com" autocomplete="email" required>
+    <button type="submit">Réserver mon accès</button>
+  </form>
   <div class="form-success" id="cta-success" style="justify-content: center; margin-top: 20px;">
     ✓ Parfait ! Tu es sur la liste prioritaire.
   </div>
 </section>
-
+ 
 <footer>
   <span>© 2026 Recast — getrecast.io — Fait avec ☕ par un solo founder</span>
   <div style="display:flex; gap: 20px;">
@@ -635,28 +633,26 @@ footer a:hover { color: var(--paper); }
     <a href="#">Contact</a>
   </div>
 </footer>
-
+ 
 <script>
-function submitEmail(inputId, successId, formId) {
-  var email = document.getElementById(inputId).value.trim();
-  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!re.test(email)) {
-    document.getElementById(inputId).style.borderColor = '#e24b4a';
-    document.getElementById(inputId).focus();
-    return;
-  }
-  document.getElementById(formId).style.display = 'none';
-  document.getElementById(successId).classList.add('visible');
-  console.log('Email collected:', email);
-}
-document.querySelectorAll('input[type="email"]').forEach(function(el) {
-  el.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-      var btn = el.closest('.hero-form, .cta-form').querySelector('button');
-      if (btn) btn.click();
+document.querySelectorAll('form[data-netlify]').forEach(function(form) {
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var emailInput = form.querySelector('input[type="email"]');
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!re.test(emailInput.value.trim())) {
+      emailInput.style.borderColor = '#e24b4a';
+      emailInput.focus();
+      return;
     }
+    var successId = form.id === 'hero-form-wrap' ? 'hero-success' : 'cta-success';
+    fetch('/', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData(form)).toString() })
+      .finally(function() {
+        form.style.display = 'none';
+        document.getElementById(successId).classList.add('visible');
+      });
   });
-  el.addEventListener('input', function() { el.style.borderColor = ''; });
+  form.querySelector('input[type="email"]').addEventListener('input', function() { this.style.borderColor = ''; });
 });
 </script>
 </body>
