@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recast — App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #0d0d0d;
+  --paper: #f5f2eb;
+  --cream: #ede9e0;
+  --accent: #c8f25a;
+  --accent-dark: #8ab83a;
+  --muted: #7a7670;
+  --border: rgba(13,13,13,0.12);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+}
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAV */
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--paper);
+  position: sticky; top: 0; z-index: 50;
+}
+.nav-logo {
+  font-family: var(--serif); font-size: 20px;
+  letter-spacing: -0.02em; color: var(--ink); text-decoration: none;
+}
+.nav-logo span { color: var(--accent-dark); font-style: italic; }
+.credits-badge {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted);
+}
+.credits-count {
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 100px; padding: 4px 12px;
+  font-size: 13px; font-weight: 500; color: var(--ink);
+}
+.upgrade-btn {
+  background: var(--ink); color: var(--paper);
+  font-family: var(--sans); font-size: 12px; font-weight: 500;
+  padding: 7px 16px; border-radius: 100px;
+  border: none; cursor: pointer; text-decoration: none;
+  transition: opacity 0.2s;
+}
+.upgrade-btn:hover { opacity: 0.75; }
+
+/* MAIN LAYOUT */
+.app-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  flex: 1;
+  min-height: calc(100vh - 57px);
+}
+@media (max-width: 768px) {
+  .app-layout { grid-template-columns: 1fr; }
+}
+
+/* LEFT PANEL */
+.panel-left {
+  padding: 40px 32px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 24px;
+}
+.panel-title {
+  font-family: var(--serif); font-size: 24px; letter-spacing: -0.02em;
+}
+.panel-title em { font-style: italic; color: var(--accent-dark); }
+
+.input-zone {
+  flex: 1;
+  min-height: 320px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  font-family: var(--sans); font-size: 14px; line-height: 1.7;
+  color: var(--ink); resize: none; outline: none;
+  transition: border-color 0.2s;
+}
+.input-zone:focus { border-color: rgba(13,13,13,0.4); }
+.input-zone::placeholder { color: #bbb8b2; }
+
+.options-row {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.tone-select {
+  font-family: var(--sans); font-size: 13px;
+  padding: 9px 14px; border-radius: 100px;
+  border: 1px solid var(--border); background: white;
+  color: var(--ink); cursor: pointer; outline: none;
+  flex: 1; min-width: 140px;
+}
+
+.output-toggles {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+}
+.toggle-item {
+  display: flex; align-items: center; gap: 10px;
+  background: white; border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px;
+  cursor: pointer; transition: border-color 0.15s, background 0.15s;
+  user-select: none;
+}
+.toggle-item.active {
+  border-color: var(--accent-dark);
+  background: #f0fad8;
+}
+.toggle-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.toggle-item .toggle-label { font-size: 13px; font-weight: 500; flex: 1; }
+.toggle-check {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+.toggle-item.active .toggle-check {
+  background: var(--accent-dark); border-color: var(--accent-dark); color: white;
+}
+
+.generate-btn {
+  width: 100%; padding: 16px;
+  background: var(--ink); color: var(--paper);
+  font-family: var(--sans); font-size: 15px; font-weight: 500;
+  border: none; border-radius: 100px; cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.generate-btn:hover:not(:disabled) { opacity: 0.85; transform: translateY(-1px); }
+.generate-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.generate-btn .btn-spinner {
+  width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white; border-radius: 50%;
+  animation: spin 0.7s linear infinite; display: none;
+}
+.generate-btn.loading .btn-spinner { display: block; }
+.generate-btn.loading .btn-text { opacity: 0.6; }
+
+/* RIGHT PANEL */
+.panel-right {
+  padding: 40px 32px;
+  display: flex; flex-direction: column; gap: 24px;
+  overflow-y: auto;
+}
+
+.empty-state {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px; text-align: center; color: var(--muted);
+}
+.empty-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--cream); display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+}
+.empty-title { font-family: var(--serif); font-size: 20px; color: var(--ink); }
+.empty-sub { font-size: 14px; max-width: 280px; line-height: 1.6; }
+
+.results-header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.results-title { font-family: var(--serif); font-size: 22px; }
+.results-meta { font-size: 13px; color: var(--muted); }
+
+.output-block {
+  background: white; border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  animation: fadeUp 0.4s ease forwards;
+}
+.output-block-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--cream);
+}
+.output-block-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500;
+}
+.output-dot { width: 8px; height: 8px; border-radius: 50%; }
+.copy-btn {
+  font-family: var(--sans); font-size: 12px; font-weight: 500;
+  padding: 5px 14px; border-radius: 100px;
+  border: 1px solid var(--border); background: white;
+  color: var(--ink); cursor: pointer; transition: background 0.15s;
+}
+.copy-btn:hover { background: var(--cream); }
+.copy-btn.copied { background: var(--accent); border-color: var(--accent-dark); }
+
+.output-items { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.output-item {
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+  font-size: 13px; line-height: 1.7; color: var(--ink);
+  position: relative;
+}
+.output-item-num {
+  position: absolute; top: 10px; right: 12px;
+  font-size: 11px; color: var(--muted);
+  background: var(--cream); border-radius: 100px;
+  padding: 2px 8px;
+}
+.output-item-copy {
+  margin-top: 8px; font-size: 12px; color: var(--muted);
+  cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+}
+.output-item-copy:hover { color: var(--ink); }
+
+/* PAYWALL */
+.paywall-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(13,13,13,0.6);
+  backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+}
+.paywall-overlay.visible { display: flex; }
+.paywall-card {
+  background: var(--paper); border-radius: 24px;
+  padding: 48px 40px; max-width: 420px; width: 90%;
+  text-align: center;
+}
+.paywall-icon { font-size: 40px; margin-bottom: 20px; }
+.paywall-title {
+  font-family: var(--serif); font-size: 28px; margin-bottom: 12px;
+}
+.paywall-sub { font-size: 15px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+.paywall-btn {
+  display: block; width: 100%;
+  padding: 16px; background: var(--ink); color: var(--paper);
+  font-family: var(--sans); font-size: 15px; font-weight: 500;
+  border: none; border-radius: 100px; cursor: pointer;
+  text-decoration: none; margin-bottom: 12px;
+  transition: opacity 0.2s;
+}
+.paywall-btn:hover { opacity: 0.8; }
+.paywall-dismiss {
+  font-size: 13px; color: var(--muted); cursor: pointer;
+  background: none; border: none; font-family: var(--sans);
+}
+.paywall-dismiss:hover { color: var(--ink); }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">re<span>cast</span></a>
+  <div class="credits-badge">
+    <span>Générations restantes</span>
+    <span class="credits-count" id="credits-display">3</span>
+  </div>
+  <a href="#" class="upgrade-btn" id="upgrade-btn">Passer Pro — 29€/mois</a>
+</nav>
+
+<div class="app-layout">
+
+  <!-- LEFT : INPUT -->
+  <div class="panel-left">
+    <h1 class="panel-title">Colle ton article,<br><em>on fait le reste.</em></h1>
+
+    <textarea
+      class="input-zone"
+      id="article-input"
+      placeholder="Colle ici ton article de blog, ton texte ou une URL...&#10;&#10;Ex: Comment j'ai triplé mon trafic en 3 mois grâce au SEO. Voici ma stratégie complète..."
+    ></textarea>
+
+    <div>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Ton de marque</p>
+      <select class="tone-select" id="tone-select">
+        <option value="professionnel">Professionnel & Sérieux</option>
+        <option value="conversationnel" selected>Conversationnel & Humain</option>
+        <option value="inspirant">Inspirant & Motivant</option>
+        <option value="humoristique">Humoristique & Décalé</option>
+        <option value="educatif">Éducatif & Expert</option>
+      </select>
+    </div>
+
+    <div>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Formats à générer</p>
+      <div class="output-toggles">
+        <div class="toggle-item active" data-format="tweets" onclick="toggleFormat(this)">
+          <div class="toggle-dot" style="background:#1d9bf0"></div>
+          <span class="toggle-label">Threads Twitter</span>
+          <div class="toggle-check">✓</div>
+        </div>
+        <div class="toggle-item active" data-format="linkedin" onclick="toggleFormat(this)">
+          <div class="toggle-dot" style="background:#0a66c2"></div>
+          <span class="toggle-label">Posts LinkedIn</span>
+          <div class="toggle-check">✓</div>
+        </div>
+        <div class="toggle-item active" data-format="newsletter" onclick="toggleFormat(this)">
+          <div class="toggle-dot" style="background:#f97316"></div>
+          <span class="toggle-label">Newsletter</span>
+          <div class="toggle-check">✓</div>
+        </div>
+        <div class="toggle-item active" data-format="script" onclick="toggleFormat(this)">
+          <div class="toggle-dot" style="background:#8b5cf6"></div>
+          <span class="toggle-label">Script vidéo</span>
+          <div class="toggle-check">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="generate-btn" id="generate-btn" onclick="generate()">
+      <div class="btn-spinner"></div>
+      <span class="btn-text">✦ Générer le contenu</span>
+    </button>
+  </div>
+
+  <!-- RIGHT : OUTPUT -->
+  <div class="panel-right" id="panel-right">
+
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">✦</div>
+      <p class="empty-title">Prêt à transformer</p>
+      <p class="empty-sub">Colle ton article à gauche et clique sur Générer pour obtenir tous tes contenus en quelques secondes.</p>
+    </div>
+
+    <div id="results-container" style="display:none; flex-direction:column; gap:20px;">
+      <div class="results-header">
+        <span class="results-title">Tes contenus</span>
+        <span class="results-meta" id="results-meta"></span>
+      </div>
+      <div id="results-blocks"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PAYWALL -->
+<div class="paywall-overlay" id="paywall">
+  <div class="paywall-card">
+    <div class="paywall-icon">⚡</div>
+    <h2 class="paywall-title">Tu as utilisé tes 3 générations gratuites</h2>
+    <p class="paywall-sub">Passe à Pro pour des générations illimitées, tous les formats, et la personnalisation de ta voix de marque.</p>
+    <a href="https://recast.lemonsqueezy.com" target="_blank" class="paywall-btn">Passer Pro — 29€/mois</a>
+    <button class="paywall-dismiss" onclick="document.getElementById('paywall').classList.remove('visible')">Peut-être plus tard</button>
+  </div>
+</div>
+
+<script>
+// ── CREDITS ──────────────────────────────────────────
+var CREDITS_KEY = 'recast_credits_v1';
+var MAX_FREE = 3;
+
+function getCredits() {
+  var v = localStorage.getItem(CREDITS_KEY);
+  return v === null ? MAX_FREE : parseInt(v);
+}
+function useCredit() {
+  var c = getCredits() - 1;
+  localStorage.setItem(CREDITS_KEY, c);
+  return c;
+}
+function updateCreditsUI() {
+  var c = getCredits();
+  document.getElementById('credits-display').textContent = c;
+  if (c <= 0) {
+    document.getElementById('upgrade-btn').style.background = '#e24b4a';
+  }
+}
+updateCreditsUI();
+
+// ── TOGGLES ──────────────────────────────────────────
+function toggleFormat(el) {
+  el.classList.toggle('active');
+}
+
+// ── GENERATE ─────────────────────────────────────────
+async function generate() {
+  var article = document.getElementById('article-input').value.trim();
+  if (!article || article.length < 100) {
+    document.getElementById('article-input').style.borderColor = '#e24b4a';
+    document.getElementById('article-input').focus();
+    return;
+  }
+  document.getElementById('article-input').style.borderColor = '';
+
+  if (getCredits() <= 0) {
+    document.getElementById('paywall').classList.add('visible');
+    return;
+  }
+
+  var activeFormats = Array.from(document.querySelectorAll('.toggle-item.active')).map(function(el) {
+    return el.dataset.format;
+  });
+  if (activeFormats.length === 0) { alert('Sélectionne au moins un format.'); return; }
+
+  var tone = document.getElementById('tone-select').value;
+  var btn = document.getElementById('generate-btn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  btn.querySelector('.btn-text').textContent = 'Génération en cours...';
+
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('results-container').style.display = 'flex';
+  document.getElementById('results-blocks').innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;">✦ L\'IA analyse ton article et génère tes contenus...</div>';
+
+  try {
+    var response = await fetch('/.netlify/functions/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ article: article, tone: tone, formats: activeFormats })
+    });
+
+    if (!response.ok) throw new Error('Erreur serveur');
+    var data = await response.json();
+
+    var remaining = useCredit();
+    updateCreditsUI();
+
+    renderResults(data, activeFormats);
+
+    if (remaining <= 0) {
+      setTimeout(function() {
+        document.getElementById('paywall').classList.add('visible');
+      }, 2000);
+    }
+  } catch(err) {
+    document.getElementById('results-blocks').innerHTML = '<div style="text-align:center;padding:40px;color:#e24b4a;">Une erreur est survenue. Réessaie dans quelques secondes.</div>';
+  }
+
+  btn.disabled = false;
+  btn.classList.remove('loading');
+  btn.querySelector('.btn-text').textContent = '✦ Générer le contenu';
+}
+
+// ── RENDER ────────────────────────────────────────────
+var FORMAT_META = {
+  tweets:     { label: 'Threads Twitter',  dot: '#1d9bf0', plural: 'thread' },
+  linkedin:   { label: 'Posts LinkedIn',   dot: '#0a66c2', plural: 'post' },
+  newsletter: { label: 'Newsletter',       dot: '#f97316', plural: 'email' },
+  script:     { label: 'Script vidéo',     dot: '#8b5cf6', plural: 'script' }
+};
+
+function renderResults(data, formats) {
+  var total = 0;
+  formats.forEach(function(f) { if (data[f]) total += data[f].length; });
+  document.getElementById('results-meta').textContent = total + ' contenus générés';
+
+  var html = '';
+  formats.forEach(function(f) {
+    if (!data[f] || !data[f].length) return;
+    var meta = FORMAT_META[f];
+    html += '<div class="output-block" style="margin-bottom:16px;">';
+    html += '<div class="output-block-header">';
+    html += '<div class="output-block-title"><div class="output-dot" style="background:' + meta.dot + '"></div>' + meta.label + ' (' + data[f].length + ')</div>';
+    html += '<button class="copy-btn" onclick="copyAll(this, \'' + f + '\')">Tout copier</button>';
+    html += '</div>';
+    html += '<div class="output-items">';
+    data[f].forEach(function(item, i) {
+      html += '<div class="output-item">';
+      if (data[f].length > 1) html += '<span class="output-item-num">' + (i+1) + '</span>';
+      html += '<div>' + escHtml(item) + '</div>';
+      html += '<span class="output-item-copy" onclick="copyOne(this, ' + JSON.stringify(item) + ')">⎘ Copier</span>';
+      html += '</div>';
+    });
+    html += '</div></div>';
+  });
+  document.getElementById('results-blocks').innerHTML = html;
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+function copyOne(el, text) {
+  navigator.clipboard.writeText(text).then(function() {
+    el.textContent = '✓ Copié !';
+    setTimeout(function() { el.textContent = '⎘ Copier'; }, 2000);
+  });
+}
+
+function copyAll(btn, format) {
+  var items = document.querySelectorAll('#results-blocks .output-item');
+  // collect text per block — simpler: just grab all text from the format block
+  var block = btn.closest('.output-block');
+  var texts = Array.from(block.querySelectorAll('.output-item > div')).map(function(el) {
+    return el.innerText;
+  });
+  navigator.clipboard.writeText(texts.join('\n\n---\n\n')).then(function() {
+    btn.textContent = '✓ Copié !';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Tout copier'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Enter to generate
+document.getElementById('article-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && e.ctrlKey) generate();
+});
+</script>
+</body>
+</html>
